@@ -1,4 +1,4 @@
-#Incremental Game made using React
+# Incremental Game made using React
 
 Name Pending
 
