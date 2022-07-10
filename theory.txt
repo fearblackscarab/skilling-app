@@ -2,7 +2,7 @@ main currency is influence.
 
 other currency's can be used to buy things to increase influence.
 
-generators: // different types of rebellion
+generators: // different types of influence
 
 Kevin's: starter tutorial complains about everything but does nothing about it./ Don't worry, we can just keep cloning this guy,power in numbers,
 
@@ -12,7 +12,7 @@ Karen's: yeah sry had to make that joke, /karen actually shows up to local votin
 
 Protestor's: down for the cause.
 
-Doctor's: doctor's have money and these one knows the mayor.
+Doctor's: doctor's have money.
 
 Lawyer's: you're gonna need these guys.
 
@@ -35,5 +35,25 @@ AMSONbold   //as asmongold
 Hashanbi //as hasan
 slade   //as slade
 johnny // johnny depp
-josh might haze    //josh strife hayes
+josh might haze    //josh strife hayes ?
 
+Upgrades:
+
+need to figure out multi purchase of upgrades possibly using a (cost*multiplier) to the power of purchase amount state?
+
+currency theory:
+
+options 1:chains down to kevins who work for influence
+
+option 2: each gen has a value for increasing influence
+
+option 3: have more then 1 currency earned per generator
+    
+     example: kevin earns money and influence, karens make kevins and influence
+
+    each generator has different outputs changing assigned to an array and i'll need to check for currency's also not just influencers.
+
+    use kevin to alter currency's based on the assigned array.
+
+tier 1=(tier 2*multiplier)+tier 1
+tier 2= 1;

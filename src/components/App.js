@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocalStorage } from "../useLocalStorage";
 import Generators from "./Generators";
 // import { Link } from "react-router-dom";
 
 function App() {
-  const [currency, setCurrency] = useLocalStorage('currency'
-    , {
+  // currency's for manual upgrades
+  const [currency, setCurrency] = useState({
       influence: 5,
-      money: 0,
       wood: 0,
       copper: 0,
       iron: 0,
@@ -20,200 +19,252 @@ function App() {
       platinum: 0
     }
   );
-
-  const [influencers, setInfluencers] = useLocalStorage('influencers', [
+  // generators for passive increase of currency or other generators
+  const [influencers, setInfluencers] = useState([
     {
       key: 0,
       id: 0,
       name: 'kevin',
-      assigned: '',
+      assigned: ['influence'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: {influence: 1 }
     },
     {
       key: 1,
       id: 1,
-      name: 'internet protestor',
-      assigned: '',
-      cost: 5,
+      name: 'internetProtestor',
+      assigned: ['kevin'],
+      cost: 100,
       quantity: 0,
-      itemPer: 1
+      itemPer: { kevin: 1 }
     },
     {
       key: 2,
       id: 2,
       name: 'karen',
-      assigned: '',
-      cost: 5,
+      assigned: ['internetProtestor'],
+      cost: 10000,
       quantity: 0,
-      itemPer: 1
+      itemPer: { internetProtestor: 1 }
     },
     {
       key: 3,
       id: 3,
       name: 'protestor',
-      assigned: '',
-      cost: 5,
+      assigned: ['karen'],
+      cost: 100000,
       quantity: 0,
-      itemPer: 1
+      itemPer: { karen: 1 }
     },
     {
       key: 4,
       id: 4,
       name: 'doctor',
-      assigned: '',
+      assigned: ['protestor'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: { protestor: 1 }
     },
     {
       key: 5,
       id: 5,
       name: 'lawyer',
-      assigned: '',
+      assigned: ['doctor'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: { doctor:1 }
     },
     {
       key: 6,
       id: 6,
       name: 'judge',
-      assigned: '',
+      assigned: ['lawyer'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: { lawyer:1 }
     },
     {
       key: 7,
       id: 7,
       name: 'da',
-      assigned: '',
+      assigned: ['judge'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: { judge:1 }
     },
     {
       key: 8,
       id: 8,
       name: 'mayor',
-      assigned: '',
+      assigned: ['da'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: { da:1 }
     },
     {
       key: 9,
       id: 9,
       name: 'governor',
-      assigned: '',
+      assigned: ['mayor'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: { mayor:1 }
     },
     {
       key: 10,
       id: 10,
       name: 'senator',
-      assigned: '',
+      assigned: ['governor'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: { governor:1 }
     },
     {
       key: 11,
       id: 11,
       name: 'singlelift',
-      assigned: '',
+      assigned: ['internet-protestor'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: { money: 2, influence: 1 }
     },
     {
       key: 12,
       id: 12,
       name: 'jeeves',
-      assigned: '',
+      assigned: ['kevin'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: { money: 2, influence: 1 }
     },
     {
       key: 13,
       id: 13,
-      name: 'doctor bike',
-      assigned: '',
+      name: 'doctor-bike',
+      assigned: ['doctor'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: { money: 2, influence: 1 }
     },
     {
       key: 14,
       id: 14,
       name: 'amsonbold',
-      assigned: '',
+      assigned: ['karen'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: { money: 2, influence: 1 }
     },
     {
       key: 15,
       id: 15,
       name: 'hashanbi',
-      assigned: '',
+      assigned: ['protestor'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: { money: 2, influence: 1 }
     },
     {
       key: 16,
       id: 16,
       name: 'slade',
-      assigned: '',
+      assigned: ['internet protestor'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: { money: 2, influence: 1 }
     },
     {
       key: 17,
       id: 17,
       name: 'johnny',
-      assigned: '',
+      assigned: ['lawyers'],
       cost: 5,
       quantity: 0,
-      itemPer: 1
+      itemPer: { money: 2, influence: 1 }
     }
   ]);
+  // incremental constant
+  setTimeout(() => {
+      incrementInfluencers(influencers)
+      // currency is bugging out, suspect it has to do with Generators component recieving influencers as a prop but not currency
+      incrementCurrency()
+  }, 1000)
 
   const loginTimer = new Date;
-
+  // general generator purchase to increase quantity 
   const addGen = (e) => {
-    const idx=e.target.id
+    let idx = e.target.id
     console.log(idx)
     if (influencers[idx].cost <= currency.influence) {
-      setCurrency(prev => ({ ...prev, influence: currency.influence - influencers[idx].cost }))
-      let data=influencers.map(item=>{
-        if(item.id==idx){
-          return {...item,quantity:item.quantity+1,cost:Math.floor(item.cost+2*1.15)}
+      let costChange=currency.influence - influencers[idx].cost
+      setCurrency(prev => ({ ...prev, influence: costChange }))
+      let data = influencers.map(item => {
+        if (item.id == idx) {
+          return { ...item, quantity: item.quantity + 1}
         }
         return item
       })
       setInfluencers(data)
     }
   };
+  // incremental constant function
+  const incrementInfluencers = (arrObj) => {
+    arrObj.map(item => {
+      let newArr = []
+      if (item.quantity > 0) {
+        for (let i = 0; i < item.assigned.length; i++) {
+          newArr.push(item.assigned[i])
+        }
+      }
+      setInfluencers(arrObj.map(influencer => {
+        if (newArr.includes(influencer.name)) {
+          for (const prop in item.itemPer) {
+            if (prop === influencer.name) {
+              return influencer.quantity=influencer.quantity+(item.itemPer[prop]*item.quantity)
+            }
+          }
+        }else{
+          return influencer
+        }
+      }))
+    })
+  };
+  
+  const incrementCurrency = () => {
+    influencers.map(item => {
+      if (item.quantity > 0) {
+        for (const key in currency) {
+          if (item.assigned.includes(key)) {
+            // console.log(item)
+            for (const prop in item.itemPer) {
+              if (prop === key) {
+                setCurrency(prev => (
+                  {
+                    ...prev,
+                    [key]: currency[key] + (item.itemPer[prop] * item.quantity)
+                  }))
+              }
+            }
+          }
+        }
+      }
+    })
+  }
 
-  console.log(currency);
-  console.log(influencers);
-  console.log(loginTimer);
+  // incrementGen()
+
+  // console.log(currency);
+  // console.log(influencers);
+  // console.log(loginTimer);
 
   return (
     <div className="app">
       <div className="container">
-        <h1>test</h1>
+        <h1>Influence:{currency.influence}</h1>
         <div className="row">
           {influencers.map(item => {
-            return <Generators id={item.id} key={item.id} handleClick={addGen} name={item.name} />
+            return <Generators id={item.id} key={item.id} handleClick={addGen} name={item.name} quantity={item.quantity} cost={item.cost} currency={currency} />
             // return <div className="gens" id={item.id} onClick={addGen} key={item.id}><p>{item.name}</p></div>
           })}
           {/* <button onClick={}></button> */}
