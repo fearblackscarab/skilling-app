@@ -256,15 +256,7 @@ function App() {
       return item
     })
   }
-
-  // const incrementGen=()=>{
-
-  // }
-  // useLocalStorage(currency, influencers)
-  // console.log(currency);
-  // console.log(influencers);
-  // console.log(loginTimer);
-
+  
   return (
     <div className="app">
       <Header  currency={currency}/>
