@@ -46,7 +46,7 @@ function App() {
       id: 2,
       name: 'karen',
       assigned: ['internetProtestor'],
-      cost: 10000,
+      cost: 1000,
       quantity: 0,
       itemPer: { internetProtestor: 1 }
     },
@@ -55,7 +55,7 @@ function App() {
       id: 3,
       name: 'protestor',
       assigned: ['karen'],
-      cost: 100000,
+      cost: 10000,
       quantity: 0,
       itemPer: { karen: 1 }
     },
@@ -223,7 +223,7 @@ function App() {
         if (newArr.includes(influencer.name)) {
           for (const prop in item.itemPer) {
             if (prop === influencer.name) {
-              return {...influencer,quantity:influencer.quantity + (item.itemPer[prop] * item.quantity) }
+               return {...influencer,quantity:influencer.quantity + (item.itemPer[prop] * item.quantity) }
             }
           }
         }else{
