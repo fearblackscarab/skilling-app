@@ -1,0 +1,1 @@
+Influencers is either working for only the last item in the array or vice versa, cant find the syntax issue;
