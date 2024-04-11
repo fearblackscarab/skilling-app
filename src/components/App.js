@@ -30,7 +30,7 @@ function App() {
       assigned: ['influence'],
       cost: 5,
       quantity: 0,
-      itemPer: { influence: 1 }
+      itemPer: 1
     },
     {
       key: 1,
@@ -39,25 +39,25 @@ function App() {
       assigned: ['kevin'],
       cost: 100,
       quantity: 0,
-      itemPer: { kevin: 1 }
+      itemPer: 1
     },
     {
       key: 2,
       id: 2,
       name: 'karen',
       assigned: ['internetProtestor'],
-      cost: 10000,
+      cost: 1000,
       quantity: 0,
-      itemPer: { internetProtestor: 1 }
+      itemPer: 1
     },
     {
       key: 3,
       id: 3,
       name: 'protestor',
       assigned: ['karen'],
-      cost: 100000,
+      cost: 10000,
       quantity: 0,
-      itemPer: { karen: 1 }
+      itemPer: 1
     },
     {
       key: 4,
@@ -66,7 +66,7 @@ function App() {
       assigned: ['protestor'],
       cost: 5,
       quantity: 0,
-      itemPer: { protestor: 1 }
+      itemPer: 1
     },
     {
       key: 5,
@@ -75,7 +75,7 @@ function App() {
       assigned: ['doctor'],
       cost: 5,
       quantity: 0,
-      itemPer: { doctor: 1 }
+      itemPer: 1
     },
     {
       key: 6,
@@ -84,7 +84,7 @@ function App() {
       assigned: ['lawyer'],
       cost: 5,
       quantity: 0,
-      itemPer: { lawyer: 1 }
+      itemPer: 1
     },
     {
       key: 7,
@@ -93,7 +93,7 @@ function App() {
       assigned: ['judge'],
       cost: 5,
       quantity: 0,
-      itemPer: { judge: 1 }
+      itemPer: 1
     },
     {
       key: 8,
@@ -102,7 +102,7 @@ function App() {
       assigned: ['da'],
       cost: 5,
       quantity: 0,
-      itemPer: { da: 1 }
+      itemPer: 1
     },
     {
       key: 9,
@@ -111,7 +111,7 @@ function App() {
       assigned: ['mayor'],
       cost: 5,
       quantity: 0,
-      itemPer: { mayor: 1 }
+      itemPer: 1
     },
     {
       key: 10,
@@ -120,7 +120,7 @@ function App() {
       assigned: ['governor'],
       cost: 5,
       quantity: 0,
-      itemPer: { governor: 1 }
+      itemPer: 1
     },
     {
       key: 11,
@@ -129,7 +129,7 @@ function App() {
       assigned: ['kevin'],
       cost: 5,
       quantity: 0,
-      itemPer: { kevin:5  }
+      itemPer: 5
     },
     {
       key: 12,
@@ -138,7 +138,7 @@ function App() {
       assigned: ['kevin'],
       cost: 5,
       quantity: 0,
-      itemPer: { kevin: 10 }
+      itemPer: 1
     },
     {
       key: 13,
@@ -147,7 +147,7 @@ function App() {
       assigned: ['doctor'],
       cost: 5,
       quantity: 0,
-      itemPer: { doctor: 10 }
+      itemPer: 1
     },
     {
       key: 14,
@@ -156,7 +156,7 @@ function App() {
       assigned: ['karen'],
       cost: 5,
       quantity: 0,
-      itemPer: { karen: 10 }
+      itemPer: 1
     },
     {
       key: 15,
@@ -165,7 +165,7 @@ function App() {
       assigned: ['internetProtestor'],
       cost: 5,
       quantity: 0,
-      itemPer: { internetProtestor: 100 }
+      itemPer: 1
     },
     {
       key: 16,
@@ -174,7 +174,7 @@ function App() {
       assigned: ['judge'],
       cost: 5,
       quantity: 0,
-      itemPer: { judge: 100 }
+      itemPer: 1
     },
     {
       key: 17,
@@ -183,14 +183,14 @@ function App() {
       assigned: ['kevin'],
       cost: 5,
       quantity: 0,
-      itemPer: { kevin: 1 }
+      itemPer: 1
     }
   ]);
   // incremental constant
-    // setInterval(() => {
-    //   incrementInfluencers(influencers)
-    // }, 2000)
-      // incrementCurrency()
+  // setInterval(() => {
+  //   incrementInfluencers(influencers)
+  // }, 2000)
+  // incrementCurrency()
 
   const loginTimer = new Date();
   // general generator purchase to increase quantity 
@@ -202,7 +202,7 @@ function App() {
       let data = influencers.map(item => {
         if (item.id == idx) {
           return { ...item, quantity: item.quantity + 1 }
-        }else{
+        } else {
           return item
         }
       })
@@ -212,56 +212,63 @@ function App() {
   };
   // incremental constant function
   const incrementInfluencers = () => {
-    influencers.map(item => {
-      let newArr = []
-      if (item.quantity > 0) {
-        for (let i = 0; i < item.assigned.length; i++) {
-          newArr.push(item.assigned[i])
-        }
-      }
-      setInfluencers(influencers.map(influencer => {
-        if (newArr.includes(influencer.name)) {
-          for (const prop in item.itemPer) {
-            if (prop === influencer.name) {
-              return {...influencer,quantity:influencer.quantity + (item.itemPer[prop] * item.quantity) }
-            }
-          }
-        }else{
-          return {...influencer}
-        }
-      }))
-    })
+    setInfluencers(influencers = influencers.map(item => {
+      // // if (item.quantity > 0) {
+      // //   for (const key in influencers) {
+      // //     if (key.includes(influencer.name)) {
+      // //       for (const prop in item.itemPer) {
+      // //         if (prop === influencer.name) {
+      // //           return {  }
+      // //         }
+      // //       }
+      // //     }
+      // //   }
+      // } else {
+      //   return { ...item }
+      // }
+    }
+    )
+    )
     console.log(influencers)
   };
   console.log(influencers)
 
   const incrementCurrency = () => {
-    influencers.map(item => {
-      if (item.quantity > 0) {
-        for (const key in currency) {
-          if (item.assigned.includes(key)) {
-            // console.log(item)
-            for (const prop in item.itemPer) {
-              if (prop === key) {
-                return setCurrency(prev => (
-                  {
-                    ...prev,
-                    [key]: currency[key] + (item.itemPer[prop] * item.quantity)
-                  }))
-              }
-            }
+    setInfluencers(prev => influencers.map(item => {
+      for (const key in currency) {
+        if (item.assigned.includes(key)) {
+          setCurrency(prev => (
+            {
+              ...prev,
+              [key]: currency[key] + (item.itemPer * item.quantity)
+            }))
+        }
+      }
+      for (const key in influencers) {
+        if (influencers[key].assigned.includes(item.name)) {
+          return {
+            ...item, quantity: item.quantity + (influencers[key].itemPer * influencers[key].quantity)
           }
         }
       }
       return item
-    })
+
+    }))
   }
-  
+
+  // const incrementGen=()=>{
+
+  // }
+  // useLocalStorage(currency, influencers)
+  // console.log(currency);
+  // console.log(influencers);
+  // console.log(loginTimer);
+
   return (
     <div className="app">
-      <Header  currency={currency}/>
-      <Main influencers={influencers} addGen={addGen}/>
-      <Footer/>
+      <Header currency={currency} />
+      <Main influencers={influencers} addGen={addGen} />
+      <Footer />
       <button onClick={incrementCurrency}>inc currency</button>
       <button onClick={incrementInfluencers}>inc influencers</button>
     </div>
